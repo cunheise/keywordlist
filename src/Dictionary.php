@@ -31,7 +31,7 @@ class Dictionary implements DictionaryInterface
         if (!file_exists($file)) {
             touch($file);
         } else {
-            $this->keywords = array_filter(preg_split("/\r\n/", file_get_contents($file)));
+            $this->keywords = array_filter(preg_split("/[\r|\n]/", file_get_contents($file)));
         }
         $this->file = $file;
     }
