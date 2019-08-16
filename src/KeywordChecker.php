@@ -29,7 +29,7 @@ class KeywordChecker implements KeywordCheckerInterface
      */
     public function __construct($dir)
     {
-        $dir = trim($dir, '/');
+        $dir = rtrim($dir, '/');
         if (!is_dir($dir)) {
             mkdir($dir, 0644, true);
         }
