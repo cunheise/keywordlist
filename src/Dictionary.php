@@ -91,9 +91,9 @@ class Dictionary implements DictionaryInterface
     {
         if ($this->isModified) {
             usort($this->keywords, function ($a, $b) {
-                return mb_strlen($a) >= mb_strlen($b);
+                return strlen($a) >= strlen($b);
             });
-            file_put_contents($this->file, implode("\n", $this->keywords));
+            file_put_contents($this->file, implode("\n", array_unique($this->keywords)));
         }
     }
 

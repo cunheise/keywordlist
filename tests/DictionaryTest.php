@@ -73,6 +73,12 @@ class DictionaryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(count($this->dictionary->getKeywords()), 0);
     }
 
+    public function testOrder()
+    {
+        $this->dictionary->add(['k2', 'k', '中', '中国人']);
+        $this->assertEquals($this->dictionary->getKeywords(), ['k', 'k2', '中', '中国人']);
+    }
+
     protected function tearDown()
     {
         parent::tearDown();

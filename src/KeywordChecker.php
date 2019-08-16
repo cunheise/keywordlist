@@ -19,9 +19,9 @@ class KeywordChecker implements KeywordCheckerInterface
      */
     protected $blacklist;
     /**
-     * @var string
+     * @var array
      */
-    protected $invalidKeyword;
+    protected $illegalKeyword;
 
     /**
      * KeywordChecker constructor.
@@ -43,18 +43,30 @@ class KeywordChecker implements KeywordCheckerInterface
      */
     public function isValid($content)
     {
+        $result = true;
         if (!empty($this->whitelist->getKeywords())) {
             $content = str_ireplace($this->whitelist->getKeywords(), '', $content);
         }
         foreach ($this->blacklist->getKeywords() as $keyword) {
-            if (stripos($content, $keyword) !== false) {
-                $this->invalidKeyword = $keyword;
-                return false;
+            if ($this->isAlpha($keyword)) {
+                $index = 0;
+                while (($index = stripos($content, $keyword, $index)) !== false) {
+                    $substr = substr($content, $index - 1, strlen($keyword) + 2);
+                    if (trim($substr) == $keyword) {
+                        $this->illegalKeyword = $keyword;
+                        $result = false;
+                    }
+                    $index++;
+                }
+            } else {
+                if (stripos($content, $keyword) !== false) {
+                    $this->illegalKeyword = $keyword;
+                    $result = false;
+                }
             }
         }
-        return true;
+        return $result;
     }
-
     /**
      * @param array|string $keywords
      * @return mixed|void
@@ -105,9 +117,13 @@ class KeywordChecker implements KeywordCheckerInterface
         $this->whitelist->delete($keywords);
     }
 
-    public function getInvalidKeyword()
+    public function getIllegalKeyword()
     {
-        return $this->invalidKeyword;
+        return $this->illegalKeyword;
     }
 
+    public function isAlpha($s)
+    {
+        return preg_match("/^[a-zA-Z\s]+$/", $s) === 1;
+    }
 }

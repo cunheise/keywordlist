@@ -39,5 +39,5 @@ interface KeywordCheckerInterface
     /**
      * @return string
      */
-    public function getInvalidKeyword();
+    public function getIllegalKeyword();
 }
