@@ -29,6 +29,9 @@ class KeywordCheckerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->keywordChecker->isValid($content), false);
         $this->assertEquals($this->keywordChecker->getIllegalKeyword(), 'is');
         $this->assertEquals($this->keywordChecker->isValid('this should be validate'), true);
+        $content = 'google';
+        $this->keywordChecker->addToBlackList('google');
+        $this->assertEquals($this->keywordChecker->isValid($content), false);
         $this->expectException(InvalidArgumentException::class);
         $this->keywordChecker->addToWhiteList('test');
         $this->keywordChecker->deleteFromBlackList('test');

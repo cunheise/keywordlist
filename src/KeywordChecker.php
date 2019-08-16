@@ -51,7 +51,7 @@ class KeywordChecker implements KeywordCheckerInterface
             if ($this->isAlpha($keyword)) {
                 $index = 0;
                 while (($index = stripos($content, $keyword, $index)) !== false) {
-                    $substr = substr($content, $index - 1, strlen($keyword) + 2);
+                    $substr = substr($content, $index == 0 ? $index : $index - 1, strlen($keyword) + 2);
                     if (trim($substr) == $keyword) {
                         $this->illegalKeyword = $keyword;
                         $result = false;
