@@ -4,6 +4,8 @@
 namespace KeywordList;
 
 
+use KeywordList\Dictionary\FileDictionary;
+
 /**
  * Class KeywordChecker
  * @package KeywordList
@@ -11,11 +13,11 @@ namespace KeywordList;
 class KeywordChecker implements KeywordCheckerInterface
 {
     /**
-     * @var Dictionary
+     * @var FileDictionary
      */
     protected $whitelist;
     /**
-     * @var Dictionary
+     * @var FileDictionary
      */
     protected $blacklist;
     /**
@@ -33,8 +35,8 @@ class KeywordChecker implements KeywordCheckerInterface
         if (!is_dir($dir)) {
             mkdir($dir, 0644, true);
         }
-        $this->whitelist = new Dictionary($dir . '/whitelist.txt');
-        $this->blacklist = new Dictionary($dir . '/blacklist.txt');
+        $this->whitelist = new FileDictionary($dir . '/whitelist.txt');
+        $this->blacklist = new FileDictionary($dir . '/blacklist.txt');
     }
 
     /**
@@ -67,6 +69,7 @@ class KeywordChecker implements KeywordCheckerInterface
         }
         return $result;
     }
+
     /**
      * @param array|string $keywords
      * @return mixed|void
@@ -126,4 +129,16 @@ class KeywordChecker implements KeywordCheckerInterface
     {
         return preg_match("/^[a-zA-Z\s]+$/", $s) === 1;
     }
+
+    public function getWhiteListKeywords()
+    {
+        return $this->whitelist->getKeywords();
+    }
+
+    public function getBlackListKeywords()
+    {
+        return $this->blacklist->getKeywords();
+    }
+
+
 }

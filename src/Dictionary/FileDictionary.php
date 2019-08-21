@@ -1,13 +1,13 @@
 <?php
 
 
-namespace KeywordList;
+namespace KeywordList\Dictionary;
 
 /**
  * Class Dictionary
  * @package KeywordList
  */
-class Dictionary implements DictionaryInterface
+class FileDictionary implements DictionaryInterface
 {
     /**
      * @var string

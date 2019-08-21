@@ -40,4 +40,14 @@ interface KeywordCheckerInterface
      * @return string
      */
     public function getIllegalKeyword();
+
+    /**
+     * @return array
+     */
+    public function getWhiteListKeywords();
+
+    /**
+     * @return array
+     */
+    public function getBlackListKeywords();
 }

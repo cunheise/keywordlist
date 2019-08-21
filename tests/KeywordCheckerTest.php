@@ -15,7 +15,7 @@ class KeywordCheckerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->keywordChecker = new KeywordChecker(dirname(__DIR__) . '/runtime');
+        $this->keywordChecker = new KeywordChecker(__DIR__ . '/../runtime');
     }
 
     public function testIsValid()

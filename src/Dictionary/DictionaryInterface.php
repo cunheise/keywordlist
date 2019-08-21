@@ -1,7 +1,7 @@
 <?php
 
 
-namespace KeywordList;
+namespace KeywordList\Dictionary;
 
 /**
  * Interface DictionaryInterface

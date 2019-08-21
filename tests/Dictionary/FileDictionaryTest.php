@@ -1,24 +1,24 @@
 <?php
 
-namespace Tests\KeywordList;
+namespace Tests\KeywordList\Dictionary;
 
-use KeywordList\Dictionary;
+use KeywordList\Dictionary\FileDictionary;
 
 /**
- * Class DictionaryTest
+ * Class FileDictionaryTest
  * @package Tests\KeywordList
  */
-class DictionaryTest extends \PHPUnit_Framework_TestCase
+class FileDictionaryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Dictionary $dictionary
+     * @var FileDictionary $dictionary
      */
     protected $dictionary;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->dictionary = new Dictionary(dirname(__DIR__) . '/runtime/dictionary.txt');
+        $this->dictionary = new FileDictionary( __DIR__ . '/../../runtime/dictionary.txt');
     }
 
     public function testAddKeyword()
@@ -82,7 +82,7 @@ class DictionaryTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         parent::tearDown();
-        unlink(dirname(__DIR__) . '/runtime/dictionary.txt');
+        unlink(__DIR__ . '/../../runtime/dictionary.txt');
     }
 
 }
