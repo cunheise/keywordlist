@@ -27,16 +27,18 @@ class KeywordChecker implements KeywordCheckerInterface
 
     /**
      * KeywordChecker constructor.
-     * @param string $dir
+     * @param string
      */
-    public function __construct($dir)
+    public function __construct($options)
     {
-        $dir = rtrim($dir, '/');
-        if (!is_dir($dir)) {
-            mkdir($dir, 0644, true);
-        }
-        $this->whitelist = new FileDictionary($dir . '/whitelist.txt');
-        $this->blacklist = new FileDictionary($dir . '/blacklist.txt');
+        $this->whitelist = $options['whitelist'];
+        $this->blacklist = $options['blacklist'];
+//        $dir = rtrim($dir, '/');
+//        if (!is_dir($dir)) {
+//            mkdir($dir, 0644, true);
+//        }
+//        $this->whitelist = new FileDictionary($dir . '/whitelist.txt');
+//        $this->blacklist = new FileDictionary($dir . '/blacklist.txt');
     }
 
     /**
@@ -139,6 +141,5 @@ class KeywordChecker implements KeywordCheckerInterface
     {
         return $this->blacklist->getKeywords();
     }
-
 
 }

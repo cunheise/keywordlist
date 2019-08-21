@@ -2,24 +2,37 @@
 
 namespace Tests\KeywordList\Dictionary;
 
+use KeywordList\Dictionary\DbDictionary;
 use KeywordList\Dictionary\DictionaryInterface;
-use KeywordList\Dictionary\FileDictionary;
+use Medoo\Medoo;
 
-/**
- * Class FileDictionaryTest
- * @package Tests\KeywordList
- */
-class FileDictionaryTest extends \PHPUnit_Framework_TestCase
+class DbDictionaryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var DictionaryInterface $dictionary
+     * @var Medoo
+     */
+    protected $db;
+
+    /**
+     * @var DictionaryInterface
      */
     protected $dictionary;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->dictionary = new FileDictionary(__DIR__ . '/../../runtime/dictionary.txt');
+        $this->db = new Medoo([
+            'database_type' => 'mysql',
+            'database_name' => 'dictionary',
+            'server' => 'localhost',
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+            'port' => 3306,
+//            'prefix' => 'PREFIX_',
+        ]);
+        $this->db->exec('CREATE TABLE dictionary (value VARCHAR(255) NOT NULL) charset=utf8');
+        $this->dictionary = new DbDictionary(['db' => $this->db, 'table' => 'dictionary']);
     }
 
     public function testAddKeyword()
@@ -83,7 +96,8 @@ class FileDictionaryTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         parent::tearDown();
-        unlink(__DIR__ . '/../../runtime/dictionary.txt');
+        $this->db->exec('DROP TABLE dictionary');
     }
+
 
 }

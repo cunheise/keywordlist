@@ -3,7 +3,9 @@
 namespace Tests\KeywordList;
 
 use InvalidArgumentException;
+use KeywordList\Dictionary\FileDictionary;
 use KeywordList\KeywordChecker;
+use SebastianBergmann\CodeCoverage\Node\File;
 
 class KeywordCheckerTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,7 +17,10 @@ class KeywordCheckerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->keywordChecker = new KeywordChecker(__DIR__ . '/../runtime');
+        $this->keywordChecker = new KeywordChecker([
+            'whitelist' => new FileDictionary(__DIR__ . '/../runtime/whitelist.txt'),
+            'blacklist' => new FileDictionary(__DIR__ . '/../runtime/blacklist.txt')
+        ]);
     }
 
     public function testIsValid()
@@ -43,8 +48,8 @@ class KeywordCheckerTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         parent::tearDown();
-        unlink(dirname(__DIR__) . '/runtime/whitelist.txt');
-        unlink(dirname(__DIR__) . '/runtime/blacklist.txt');
+        unlink(__DIR__ . '/../runtime/whitelist.txt');
+        unlink(__DIR__ . '/../runtime/blacklist.txt');
     }
 
 

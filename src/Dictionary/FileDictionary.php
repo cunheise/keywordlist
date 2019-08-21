@@ -3,11 +3,13 @@
 
 namespace KeywordList\Dictionary;
 
+use InvalidArgumentException;
+
 /**
  * Class Dictionary
  * @package KeywordList
  */
-class FileDictionary implements DictionaryInterface
+class FileDictionary extends AbstractDictionary
 {
     /**
      * @var string
@@ -45,13 +47,10 @@ class FileDictionary implements DictionaryInterface
     }
 
     /**
-     * @param array|string $keywords
+     * @param array $keywords
      */
-    public function add($keywords)
+    protected function _add($keywords)
     {
-        if (!is_array($keywords)) {
-            $keywords = [$keywords];
-        }
         foreach ($keywords as $keyword) {
             if (!$this->exist($keyword)) {
                 array_push($this->keywords, $this->normalize($keyword));
@@ -61,11 +60,11 @@ class FileDictionary implements DictionaryInterface
         $this->store();
     }
 
-    public function delete($keywords)
+    /**
+     * @param array $keywords
+     */
+    protected function _delete($keywords)
     {
-        if (!is_array($keywords)) {
-            $keywords = [$keywords];
-        }
         foreach ($keywords as $keyword) {
             if (($index = array_search($this->normalize($keyword), $this->keywords)) !== false) {
                 unset($this->keywords[$index]);
@@ -95,19 +94,6 @@ class FileDictionary implements DictionaryInterface
             });
             file_put_contents($this->file, implode("\n", array_unique($this->keywords)));
         }
-    }
-
-    /**
-     * @param $keyword
-     * @return mixed|string
-     */
-    protected function normalize($keyword)
-    {
-        $keyword = strtolower($keyword);
-        foreach ([' ', '　', "\n", "\r"] as $filterItem) {
-            $keyword = str_replace($filterItem, '', $keyword);
-        }
-        return $keyword;
     }
 
 }
