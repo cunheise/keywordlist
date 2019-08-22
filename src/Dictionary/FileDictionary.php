@@ -3,8 +3,6 @@
 
 namespace KeywordList\Dictionary;
 
-use InvalidArgumentException;
-
 /**
  * Class Dictionary
  * @package KeywordList

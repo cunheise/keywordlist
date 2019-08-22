@@ -3,8 +3,7 @@
 
 namespace KeywordList\Dictionary;
 
-
-use Predis\ClientInterface;
+use Redis;
 
 /**
  * Class RedisDictionary
@@ -13,7 +12,7 @@ use Predis\ClientInterface;
 class RedisDictionary extends AbstractDictionary
 {
     /**
-     * @var ClientInterface
+     * @var Redis
      */
     protected $redis;
     /**
@@ -38,7 +37,7 @@ class RedisDictionary extends AbstractDictionary
     {
         foreach ($keywords as $keyword) {
             if (!$this->exist($keyword)) {
-                $this->redis->hset($this->name, $this->getKey($keyword), $this->normalize($keyword));
+                $this->redis->hSet($this->name, $this->getKey($keyword), $this->normalize($keyword));
             }
         }
     }
@@ -49,8 +48,8 @@ class RedisDictionary extends AbstractDictionary
     protected function _delete($keywords)
     {
         foreach ($keywords as $keyword) {
-            if ($this->redis->hlen($this->name)) {
-                $this->redis->hdel($this->name, $this->getKey($keyword));
+            if ($this->redis->hLen($this->name)) {
+                $this->redis->hDel($this->name, $this->getKey($keyword));
             }
         }
     }
@@ -61,7 +60,7 @@ class RedisDictionary extends AbstractDictionary
      */
     public function exist($keyword)
     {
-        return (bool)$this->redis->hexists($this->name, $this->getKey($keyword));
+        return (bool)$this->redis->hExists($this->name, $this->getKey($keyword));
     }
 
     /**
@@ -69,7 +68,7 @@ class RedisDictionary extends AbstractDictionary
      */
     public function getKeywords()
     {
-        $keywords = $this->redis->hvals($this->name);
+        $keywords = $this->redis->hVals($this->name);
         usort($keywords, function ($a, $b) {
             return strlen($a) >= strlen($b);
         });
@@ -83,6 +82,11 @@ class RedisDictionary extends AbstractDictionary
     protected function getKey($keyword)
     {
         return md5($this->normalize($keyword));
+    }
+
+    public function __destruct()
+    {
+        $this->redis->close();
     }
 
 }

@@ -4,8 +4,7 @@ namespace Tests\KeywordList\Dictionary;
 
 use KeywordList\Dictionary\DictionaryInterface;
 use KeywordList\Dictionary\RedisDictionary;
-use Predis\Client;
-use Predis\ClientInterface;
+use Redis;
 
 /**
  * Class RedisDictionaryTest
@@ -14,7 +13,7 @@ use Predis\ClientInterface;
 class RedisDictionaryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ClientInterface
+     * @var Redis
      */
     protected $redis;
     /**
@@ -25,11 +24,9 @@ class RedisDictionaryTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->redis = new Client([
-            'host' => '127.0.0.1',
-            'port' => 6379,
-            'database' => 15
-        ]);
+        $this->redis = new Redis();
+        $this->redis->open('127.0.0.1', 6379);
+        $this->redis->select(0);
         $this->dictionary = new RedisDictionary(['redis' => $this->redis, 'name' => 'dictionary']);
     }
 
@@ -94,8 +91,10 @@ class RedisDictionaryTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         parent::tearDown();
-        if ($this->redis->hlen('dictionary') > 0) {
-            $this->redis->hdel('dictionary', $this->redis->hkeys('dictionary'));
+        if ($this->redis->hLen('dictionary') > 0) {
+            foreach ($this->redis->hKeys('dictionary') as $key) {
+                $this->redis->hDel('dictionary', $key);
+            }
         }
     }
 
