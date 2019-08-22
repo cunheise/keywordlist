@@ -4,42 +4,64 @@
 namespace KeywordList\Dictionary;
 
 
-use Redis;
+use Predis\ClientInterface;
 
 class RedisDictionary extends AbstractDictionary
 {
     /**
-     * @var \Redis
+     * @var ClientInterface
      */
     protected $redis;
+    /**
+     * @var string
+     */
+    protected $name;
 
+    /**
+     * RedisDictionary constructor.
+     * @param array $options
+     */
     public function __construct($options)
     {
-        if ($options instanceof Redis) {
-            $this->redis = $options['redis'];
-        } elseif (is_array($options)) {
-            $this->redis = new Redis();
-        }
+        $this->redis = $options['redis'];
+        $this->name = $options['name'];
     }
 
     protected function _add($keywords)
     {
-        // TODO: Implement _add() method.
+        foreach ($keywords as $keyword) {
+            if (!$this->exist($keyword)) {
+                $this->redis->hset($this->name, $this->getKey($keyword), $this->normalize($keyword));
+            }
+        }
     }
 
     protected function _delete($keywords)
     {
-        // TODO: Implement _delete() method.
+        foreach ($keywords as $keyword) {
+            if ($this->redis->hlen($this->name)) {
+                $this->redis->hdel($this->name, $this->getKey($keyword));
+            }
+        }
     }
 
     public function exist($keyword)
     {
-        // TODO: Implement exist() method.
+        return (bool)$this->redis->hexists($this->name, $this->getKey($keyword));
     }
 
     public function getKeywords()
     {
-        // TODO: Implement getKeywords() method.
+        $keywords = $this->redis->hvals($this->name);
+        usort($keywords, function ($a, $b) {
+            return strlen($a) >= strlen($b);
+        });
+        return $keywords;
+    }
+
+    protected function getKey($keyword)
+    {
+        return md5($this->normalize($keyword));
     }
 
 }
