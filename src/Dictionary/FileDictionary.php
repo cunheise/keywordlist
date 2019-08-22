@@ -83,9 +83,6 @@ class FileDictionary extends AbstractDictionary
         return in_array($this->normalize($keyword), $this->keywords);
     }
 
-    /**
-     *
-     */
     protected function store()
     {
         if ($this->isModified) {

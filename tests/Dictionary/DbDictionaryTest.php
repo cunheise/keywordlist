@@ -6,6 +6,10 @@ use KeywordList\Dictionary\DbDictionary;
 use KeywordList\Dictionary\DictionaryInterface;
 use Medoo\Medoo;
 
+/**
+ * Class DbDictionaryTest
+ * @package Tests\KeywordList\Dictionary
+ */
 class DbDictionaryTest extends \PHPUnit_Framework_TestCase
 {
     /**

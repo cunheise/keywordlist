@@ -30,6 +30,9 @@ class DbDictionary extends AbstractDictionary
         $this->table = $options['table'];
     }
 
+    /**
+     * @param array $keywords
+     */
     protected function _add($keywords)
     {
         foreach ($keywords as $keyword) {

@@ -7,6 +7,10 @@ use KeywordList\Dictionary\RedisDictionary;
 use Predis\Client;
 use Predis\ClientInterface;
 
+/**
+ * Class RedisDictionaryTest
+ * @package Tests\KeywordList\Dictionary
+ */
 class RedisDictionaryTest extends \PHPUnit_Framework_TestCase
 {
     /**

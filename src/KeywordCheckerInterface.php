@@ -3,7 +3,10 @@
 
 namespace KeywordList;
 
-
+/**
+ * Interface KeywordCheckerInterface
+ * @package KeywordList
+ */
 interface KeywordCheckerInterface
 {
     /**
@@ -14,25 +17,25 @@ interface KeywordCheckerInterface
 
     /**
      * @param string|array $keywords
-     * @return mixed
+     * @return void
      */
     public function addToBlackList($keywords);
 
     /**
      * @param string|array $keywords
-     * @return mixed
+     * @return void
      */
     public function deleteFromBlackList($keywords);
 
     /**
      * @param string|array $keywords
-     * @return mixed
+     * @return void
      */
     public function addToWhiteList($keywords);
 
     /**
      * @param string|array $keywords
-     * @return mixed
+     * @return void
      */
     public function deleteFromWhiteList($keywords);
 

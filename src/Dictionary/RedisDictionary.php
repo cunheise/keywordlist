@@ -6,6 +6,10 @@ namespace KeywordList\Dictionary;
 
 use Predis\ClientInterface;
 
+/**
+ * Class RedisDictionary
+ * @package KeywordList\Dictionary
+ */
 class RedisDictionary extends AbstractDictionary
 {
     /**
@@ -27,6 +31,9 @@ class RedisDictionary extends AbstractDictionary
         $this->name = $options['name'];
     }
 
+    /**
+     * @param array $keywords
+     */
     protected function _add($keywords)
     {
         foreach ($keywords as $keyword) {
@@ -36,6 +43,9 @@ class RedisDictionary extends AbstractDictionary
         }
     }
 
+    /**
+     * @param array $keywords
+     */
     protected function _delete($keywords)
     {
         foreach ($keywords as $keyword) {
@@ -45,11 +55,18 @@ class RedisDictionary extends AbstractDictionary
         }
     }
 
+    /**
+     * @param string $keyword
+     * @return bool
+     */
     public function exist($keyword)
     {
         return (bool)$this->redis->hexists($this->name, $this->getKey($keyword));
     }
 
+    /**
+     * @return array
+     */
     public function getKeywords()
     {
         $keywords = $this->redis->hvals($this->name);
@@ -59,6 +76,10 @@ class RedisDictionary extends AbstractDictionary
         return $keywords;
     }
 
+    /**
+     * @param string $keyword
+     * @return string
+     */
     protected function getKey($keyword)
     {
         return md5($this->normalize($keyword));

@@ -7,7 +7,7 @@ use KeywordList\Dictionary\FileDictionary;
 
 /**
  * Class FileDictionaryTest
- * @package Tests\KeywordList
+ * @package Tests\KeywordList\Dictionary
  */
 class FileDictionaryTest extends \PHPUnit_Framework_TestCase
 {

@@ -5,8 +5,11 @@ namespace Tests\KeywordList;
 use InvalidArgumentException;
 use KeywordList\Dictionary\FileDictionary;
 use KeywordList\KeywordChecker;
-use SebastianBergmann\CodeCoverage\Node\File;
 
+/**
+ * Class KeywordCheckerTest
+ * @package Tests\KeywordList
+ */
 class KeywordCheckerTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -51,6 +54,5 @@ class KeywordCheckerTest extends \PHPUnit_Framework_TestCase
         unlink(__DIR__ . '/../runtime/whitelist.txt');
         unlink(__DIR__ . '/../runtime/blacklist.txt');
     }
-
 
 }

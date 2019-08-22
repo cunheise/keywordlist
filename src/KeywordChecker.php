@@ -4,7 +4,7 @@
 namespace KeywordList;
 
 
-use KeywordList\Dictionary\FileDictionary;
+use KeywordList\Dictionary\DictionaryInterface;
 
 /**
  * Class KeywordChecker
@@ -13,32 +13,26 @@ use KeywordList\Dictionary\FileDictionary;
 class KeywordChecker implements KeywordCheckerInterface
 {
     /**
-     * @var FileDictionary
+     * @var DictionaryInterface
      */
     protected $whitelist;
     /**
-     * @var FileDictionary
+     * @var DictionaryInterface
      */
     protected $blacklist;
     /**
-     * @var array
+     * @var string
      */
     protected $illegalKeyword;
 
     /**
      * KeywordChecker constructor.
-     * @param string
+     * @param array $options
      */
     public function __construct($options)
     {
         $this->whitelist = $options['whitelist'];
         $this->blacklist = $options['blacklist'];
-//        $dir = rtrim($dir, '/');
-//        if (!is_dir($dir)) {
-//            mkdir($dir, 0644, true);
-//        }
-//        $this->whitelist = new FileDictionary($dir . '/whitelist.txt');
-//        $this->blacklist = new FileDictionary($dir . '/blacklist.txt');
     }
 
     /**
@@ -95,12 +89,13 @@ class KeywordChecker implements KeywordCheckerInterface
      */
     public function deleteFromBlackList($keywords)
     {
-        if (is_string($keywords)) {
-            $keywords = [$keywords];
-        }
         $this->blacklist->delete($keywords);
     }
 
+    /**
+     * @param array|string $keywords
+     * @return void
+     */
     public function addToWhiteList($keywords)
     {
         if (is_string($keywords)) {
@@ -114,32 +109,46 @@ class KeywordChecker implements KeywordCheckerInterface
         $this->whitelist->add($keywords);
     }
 
+    /**
+     * @param array|string $keywords
+     * @return void
+     */
     public function deleteFromWhiteList($keywords)
     {
-        if (is_string($keywords)) {
-            $keywords = [$keywords];
-        }
         $this->whitelist->delete($keywords);
     }
 
+    /**
+     * @return string
+     */
     public function getIllegalKeyword()
     {
         return $this->illegalKeyword;
     }
 
-    public function isAlpha($s)
-    {
-        return preg_match("/^[a-zA-Z\s]+$/", $s) === 1;
-    }
-
+    /**
+     * @return array
+     */
     public function getWhiteListKeywords()
     {
         return $this->whitelist->getKeywords();
     }
 
+    /**
+     * @return array
+     */
     public function getBlackListKeywords()
     {
         return $this->blacklist->getKeywords();
+    }
+
+    /**
+     * @param string $s
+     * @return bool
+     */
+    protected function isAlpha($s)
+    {
+        return preg_match("/^[a-zA-Z\s]+$/", $s) === 1;
     }
 
 }
